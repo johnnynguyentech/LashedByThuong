@@ -1,0 +1,23 @@
+.Home{
+    text-align: center;
+    padding-top: 200px;
+    background-image: url('../../components/Images/wallpaper.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+    box-shadow: 0 2px 2px 2px rgba(0,0,0,.2);
+}
+
+#name{
+    font-family: 'Kalam', cursive;
+    font-size: 400%;
+    background: -webkit-linear-gradient(#eee,#333);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+#bio{
+    font-family: 'Lexend Peta', sans-serif;
+    padding-bottom: 300px;
+}

@@ -1,0 +1,16 @@
+.Book{
+    text-align: center;
+}
+
+#readytitle{
+    font-family: 'Lexend Peta', sans-serif;
+    background: -webkit-linear-gradient(#eee,#333);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+#paragraph{
+    font-family: 'Montserrat', sans-serif;
+    margin-left: 20%;
+    margin-right: 20%;
+}
