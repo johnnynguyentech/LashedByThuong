@@ -1,0 +1,16 @@
+.carousel {
+    width: 30%;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    margin: auto;
+}
+
+
+@media only screen
+  and (max-device-width: 600px) {
+    .carousel {
+        width: 75%;
+        padding-top: 25px;
+        padding-bottom: 25px;
+    }
+}

@@ -1,5 +1,6 @@
 #aboutPic1 {
     width: 70%;
+    border-radius: 50%;
 }
 
 #aboutPic2 {
@@ -41,7 +42,6 @@
     #aboutPartOne{
         width:90%;
     }
-    
     #aboutPartTwo{
         width: 90%;
     }
