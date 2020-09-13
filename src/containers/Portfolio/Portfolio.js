@@ -13,6 +13,8 @@ class Portfolio extends Component {
             <Aux>
                 <div className="Porfolio"> 
                     <TitleLabel>PORTFOLIO</TitleLabel>
+                    <h2 id="portfolioHeading">OUR GALLERY</h2>
+                    <p id="portfolioBio">Here at LashedByThuong, we give you time to feel beautiful with our quality lash services. Check out our porfolio below, showcasing a variety of sets from some of our beautiful clients we've had the pleasure of serving.</p>
                     <div id="portfolioBackground">
                         <SlideShow />
                         <p id="IGLink">View more <a href="https://www.instagram.com/lashedbythuong/?hl=en" target="_blank" rel="noopener noreferrer">@lashedbythuong</a>!</p>
