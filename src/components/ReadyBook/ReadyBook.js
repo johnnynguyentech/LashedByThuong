@@ -9,7 +9,7 @@ class ReadyBook extends Component {
         return (
             <div className="ReadyBook"> 
                 <h3 id="readytitle">Ready to book your appointment?</h3>
-                <p id="paragraph">Here at LashedByThuong, we are commited to providing high-end and profressional lash extension services, guarenteeing the best results.</p>
+                <p id="paragraph">Here at LashedByThuong, we are commited to providing high-end and professional lash extension services, guarenteeing the best results.</p>
                 <NavLink to='/book'><button type="button" className="btn" id="bookNowBtn">BOOK YOUR APPOINTMENT ONLINE</button></NavLink>
             </div>
         );
