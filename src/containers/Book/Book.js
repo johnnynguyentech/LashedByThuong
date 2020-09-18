@@ -12,10 +12,11 @@ class Book extends Component {
         return (
             <div className="Book"> 
                 <TitleLabel>BOOK NOW</TitleLabel>
-                <h3 id="readytitle">Ready to book your appointment?</h3>
-                <p id="paragraph">Here at LashedByThuong, we are commited to providing high-end and profressional lash extension services, guarenteeing the best results.</p>
-                <ClosedForm />
-                {/* <OpenForm /> */}
+                <div id="bookingBackground">
+                    <ClosedForm />
+                    {/* <OpenForm /> */}
+                </div>
+                <br></br>
             </div>
         );
     }

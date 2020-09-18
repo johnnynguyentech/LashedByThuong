@@ -9,7 +9,7 @@ class ClosedForm extends Component {
         return (
             <div className="ClosedForm"> 
                 <div className="container">
-                    <div className="jumbotron" id="bookjumbo">
+                    <div className="jumbotron" id="closedFormJumbo">
                         <h3>ONLINE APPOINTMENTS ARE CURRENTLY CLOSED.</h3>
                         <h3>COME BACK SOON!</h3>
                     </div>

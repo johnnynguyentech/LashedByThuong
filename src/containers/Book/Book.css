@@ -9,8 +9,19 @@
     -webkit-text-fill-color: transparent;
 }
 
-#paragraph{
+#bookParagraph{
     font-family: 'Montserrat', sans-serif;
     margin-left: 20%;
     margin-right: 20%;
+    padding-bottom: 30px;
+}
+
+#bookingBackground{
+    background-image: url('../../components/Images/wallpaper.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    box-shadow: 0px 5px 5px #888, 0px -5px 5px #888;
+    padding-top: 30px;
+    padding-bottom: 1px;
 }
