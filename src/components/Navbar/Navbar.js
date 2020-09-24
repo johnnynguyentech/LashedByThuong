@@ -28,7 +28,6 @@ class Navbar extends Component {
                             </li>
                             <li className="nav-item">
                             <NavLink to='/book'><button type="button" className="btn" id="book">BOOK NOW</button></NavLink>
-                            {/* <button type="button" class="btn btn-light nav-link" id="book">BOOK NOW</button> */}
                             </li>
                             </ul>
                         </div>

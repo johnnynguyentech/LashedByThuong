@@ -10,6 +10,7 @@ import Portfolio from './Portfolio/Portfolio';
 import Pricing from './Pricing/Pricing';
 import Book from './Book/Book';
 import Appointments from './Appointments/Appointments';
+import Thanks from './Thanks/Thanks';
 import ScrollToTop from '../hoc/ScrollToTop/ScrollToTop';
 
 
@@ -26,7 +27,8 @@ class Lash extends Component {
                         <Route path="/pricing" exact component={Pricing} />
                         <Route path="/book" exact component={Book} />
                         <Route path="/appointments" exact component={Appointments} />
-                        <Route render={() => <center><h1>Not Found</h1></center>} />
+                        <Route path="/thankyou" exact component={Thanks} />
+                        <Route render={() => <center><h1 id="error">404 Not Found</h1></center>} />
                     </Switch>
                 </ScrollToTop>
                 <Footer />

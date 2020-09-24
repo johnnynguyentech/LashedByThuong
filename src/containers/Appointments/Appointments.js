@@ -10,7 +10,7 @@ class Appointments extends Component {
         return (
             <div className="Appointments"> 
                 <TitleLabel>APPOINTMENT LIST</TitleLabel>
-                <h1 id="greeting">Welcome Team Member!</h1>
+                <h3 id="greeting">Welcome Team Member!</h3>
             </div>
         );
     }
