@@ -28,7 +28,7 @@
     font-size: 75%;
     padding-top: 10px;
     padding-bottom: 0px;
-    line-height: 1;
+    line-height: .1;
 }
 
 #exampleModalLabel{
@@ -37,6 +37,7 @@
 
 #clientInfo {
     font-weight: bolder;
+    line-height: 0.2;
 }
 
 @media only screen

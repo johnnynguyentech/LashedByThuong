@@ -1,6 +1,7 @@
 import * as actionTypes from './actions';
 
 const initialState = {
+    loggedIn: false,
     time: new Date(),
     name: "",
     phone: "",
@@ -14,7 +15,11 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
-        case actionTypes.APPOINTMENT_TO_MODAL:
+        case actionTypes.LOG_IN:
+            return {
+                ...state
+            };
+            case actionTypes.APPOINTMENT_TO_MODAL:
             return {
                 ...state,
                 name: action.name,

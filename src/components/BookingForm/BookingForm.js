@@ -1,20 +1,42 @@
 import React, { Component } from 'react';
 import Calander from '../Calander/Calander';
-import { connect } from 'react-redux';
 
 import './BookingForm.css';
-import * as actionTypes from '../../store/actions';
-import { NavLink } from 'react-router-dom';
+import { withRouter } from "react-router-dom";
 
 
 
 class OpenForm extends Component {
     state = {
-        openAppointments: false
+        openAppointments: false,
+        time: new Date(),
+        name: "",
+        phone: "",
+        email: "",
+        date1: "",
+        date2: "",
+        date3: "",
+        appointmentFor: "",
+        notes: ""
+    }
+
+    onChangeHandler = (event) => {
+        this.setState({
+          [event.target.name]: event.target.value
+        });
+    }
+
+    onSubmitHandler = () => {
+        //If date is today's date and 8am, state = none
+    }
+
+    confirmAppointmentHandler = () => {
+        // Add to firebase through axios
+        this.props.history.push("/thankyou");
     }
 
     render () {
-        let formHeader = <center><h3>ONLINE APPOINTMENTS ARE CURRENTLY CLOSED</h3></center>
+        let formHeader = <center><h3>ONLINE APPOINTMENTS ARE CURRENTLY CLOSED</h3></center>;
         if (this.state.openAppointments) {
             formHeader = <center><h3>CONTACT INFORMATION AND APPOINTMENT DETAILS</h3></center>;
         }
@@ -32,17 +54,25 @@ class OpenForm extends Component {
                             </div>
                             <div className="modal-body">
                                 <p id="clientInfo">Name: </p>
+                                <p>{this.state.name}</p>
                                 <p id="clientInfo">Phone: </p>
+                                <p>{this.state.phone}</p>
                                 <p id="clientInfo">Email:</p>
+                                <p>{this.state.email}</p>
                                 <p id="clientInfo">Date(1st Choice):</p>
+                                <p>{this.state.date1}</p>
                                 <p id="clientInfo">Date(2nd Choice):</p>
+                                <p>{this.state.date2}</p>
                                 <p id="clientInfo">Date(3rd Choice):</p>
+                                <p>{this.state.date3}</p>
                                 <p id="clientInfo">Appointment For: </p>
+                                <p>{this.state.appointmentFor}</p>
                                 <p id="clientInfo">Notes:</p>
+                                <p>{this.state.notes}</p>
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <NavLink to="/thankyou"><button type="button" className="btn btn-primary" id="confirmButton">Confirm Appointment</button></NavLink>
+                                <button type="button" className="btn btn-primary" id="confirmButton" data-dismiss="modal" onClick={this.confirmAppointmentHandler}>Confirm Appointment</button>
                             </div>
                         </div>
                     </div>
@@ -52,24 +82,48 @@ class OpenForm extends Component {
                 <div className="jumbotron" id="openFormJumbo">
                     {formHeader}
                     <form>
-                        <div class="form-group">
+                        <div className="form-group">
                             <label for="formGroupExampleInput">Name:</label>
-                            <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Thuong An"></input>
+                            <input 
+                                onChange={(event) => this.onChangeHandler(event)}
+                                name="name"
+                                value={this.state.name} 
+                                type="text" 
+                                className="form-control" 
+                                id="formGroupExampleInput" 
+                                placeholder="Thuong An">
+                             </input>
                         </div>
-                        <div class="form-group">
+                        <div className="form-group">
                             <label for="formGroupExampleInput">Phone:</label>
-                            <input type="tel" class="form-control" id="formGroupExampleInput1" placeholder="408-555-5555"></input>
+                            <input 
+                                onChange={(event) => this.onChangeHandler(event)} 
+                                name="phone"
+                                value={this.state.phone} 
+                                type="tel" 
+                                className="form-control" 
+                                id="formGroupExampleInput1" 
+                                placeholder="408-555-5555">
+                            </input>
                         </div>
-                        <div class="form-group">
+                        <div className="form-group">
                             <label for="exampleFormControlInput1">Email:</label>
-                            <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com"></input>
+                            <input 
+                                onChange={(event) => this.onChangeHandler(event)} 
+                                name="email"
+                                value={this.state.email} 
+                                type="email" 
+                                className="form-control" 
+                                id="exampleFormControlInput1" 
+                                placeholder="name@example.com">
+                            </input>
                         </div>
-                        <div class="form-group">
+                        <div className="form-group">
                             <label for="formGroupExampleInput">Date:</label>
                                 <div className="row">
                                     <div className="col-lg-4 col-xs-12">
                                         <p id="choices">1st Choice (Required):</p>
-                                        <Calander />  
+                                        <Calander onChange={(event) => this.onChangeHandler(event)} name="date1" value={this.state.date1} />
                                     </div>
                                     <div className="col-lg-4 col-xs-12">
                                         <p id="choices">2nd Choice:</p>
@@ -81,9 +135,9 @@ class OpenForm extends Component {
                                     </div>
                                 </div>
                         </div>
-                        <div class="form-group">
+                        <div className="form-group">
                             <label for="exampleFormControlSelect1">I'm Making an Appointment For:</label>
-                            <select class="form-control" id="exampleFormControlSelect1">
+                            <select onChange={(event) => this.onChangeHandler(event)} name="appointmentFor" value={this.state.appointmentFor} class="form-control" id="exampleFormControlSelect1">
                                 <option>Full Set: Natural Volume</option>
                                 <option>Full Set: Volume</option>
                                 <option>Full Set: Mega Volume</option>
@@ -93,9 +147,17 @@ class OpenForm extends Component {
                                 <option>Removal</option>
                             </select>
                         </div>
-                        <div class="form-group">
+                        <div className="form-group">
                             <label for="exampleFormControlTextarea1">Notes, Comments, and Questions:</label>
-                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="3 week fill, foreign fill, etc..."></textarea>
+                            <textarea 
+                                onChange={(event) => this.onChangeHandler(event)} 
+                                name="notes"
+                                value={this.state.notes} 
+                                className="form-control" 
+                                id="exampleFormControlTextarea1" 
+                                rows="3" 
+                                placeholder="3 week fill, foreign fill, etc...">
+                            </textarea>
                         </div>
                     </form>
                     <h5><strong>*PLEASE NOTE*</strong></h5>
@@ -105,7 +167,7 @@ class OpenForm extends Component {
                         <li>Same day cancellations or no shows will be charged 50% of the services booked.</li>
                     </ul>
                     <center>
-                        <button type="submit" className="btn btn-primary" id="bookingButton" data-toggle="modal" data-target="#exampleModal" disabled={!this.state.openAppointments}>
+                        <button type="submit" className="btn btn-primary" id="bookingButton" data-toggle="modal" data-target="#exampleModal" disabled={!this.state.openAppointments} onClick={this.onSubmitHandler}>
                             Submit
                         </button>
                     </center>
@@ -116,11 +178,5 @@ class OpenForm extends Component {
     }
 }
 
-const mapStateToProps = state => {
-    return {
-        time: state.time
-    };
-}
 
-
-export default connect(mapStateToProps)(OpenForm);
+export default (withRouter(OpenForm));

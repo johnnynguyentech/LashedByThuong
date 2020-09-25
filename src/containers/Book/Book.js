@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 
 import './Book.css';
 import TitleLabel from '../../components/TitleLabel/TitleLabel';
-import BookingFrom from '../../components/BookingForm/BookingForm';
 import BookingForm from '../../components/BookingForm/BookingForm';
 
 
