@@ -1,2 +1,0 @@
-export const APPOINTMENT_TO_MODAL = 'APPOINTMENT_TO_MODAL';
-export const LOG_IN = 'LOG_IN';

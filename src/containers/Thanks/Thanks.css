@@ -1,17 +1,13 @@
 .thankyouNote1{
     font-family: 'Lexend Peta', sans-serif;
-    background: -webkit-linear-gradient(#eee,#333);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: #333;
     text-align: center;
     margin-top: 100px;
 }
 
 .thankyouNote2{
     font-family: 'Lexend Peta', sans-serif;
-    background: -webkit-linear-gradient(#eee,#333);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: #333;
     text-align: center;
-    margin-bottom: 240px;
+    margin-bottom: 250px;
 }

@@ -28,7 +28,7 @@ class Footer extends Component {
         return (
             <div className="Footer"> 
                 {/* MODAL */}
-                <div className="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div className="modal fade" id="exampleModal2" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div className="modal-dialog">
                         <div className="modal-content">
                             <div className="modal-header">
@@ -40,25 +40,25 @@ class Footer extends Component {
                             <div className="modal-body">
                                 <form>
                                     <div className="form-group">
-                                        <label for="formGroupExampleInput">Username:</label>
+                                        <label htmlFor="formGroupExampleInput">Username:</label>
                                         <input 
                                             onChange={(event) => this.onChangeHandler(event)}
                                             name="attemptUsername"
                                             value={this.state.attemptUsername} 
                                             type="text" 
                                             className="form-control" 
-                                            id="formGroupExampleInput" 
+                                            id="formGroupExampleInput2" 
                                             placeholder="Username">
                                         </input>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="exampleInputPassword1">Password:</label>
+                                    <div className="form-group">
+                                        <label htmlFor="exampleInputPassword1">Password:</label>
                                         <input 
                                             onChange={(event) => this.onChangeHandler(event)}
                                             name="attemptPassword"
                                             value={this.state.attemptPassword} 
                                             type="password" 
-                                            class="form-control" 
+                                            className="form-control" 
                                             id="exampleInputPassword1" 
                                             placeholder="Password">
                                         </input>

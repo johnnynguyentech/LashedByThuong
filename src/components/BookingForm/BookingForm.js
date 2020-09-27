@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
-import Calander from '../Calander/Calander';
-
-import './BookingForm.css';
 import { withRouter } from "react-router-dom";
+import './BookingForm.css';
+import axios from '../../axios-appt';
 
+
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 
 class OpenForm extends Component {
     state = {
         openAppointments: false,
-        time: new Date(),
         name: "",
         phone: "",
         email: "",
@@ -17,7 +18,13 @@ class OpenForm extends Component {
         date2: "",
         date3: "",
         appointmentFor: "",
-        notes: ""
+        notes: "",
+        day1: "Date",
+        day2: "Date",
+        day3: "Date",
+        time1: "",
+        time2: "",
+        time3: ""
     }
 
     onChangeHandler = (event) => {
@@ -26,12 +33,75 @@ class OpenForm extends Component {
         });
     }
 
+    onDate1ChangeHandler = (event) => {
+        const dateTime1 = event.toLocaleString()
+        const date1 = dateTime1.split(',').slice(0, 1).join(' ');
+        this.setState({
+            day1: date1
+          });
+    }
+
+    onDate2ChangeHandler = (event) => {
+        const dateTime2 = event.toLocaleString()
+        const date2 = dateTime2.split(',').slice(0, 1).join(' ');
+        this.setState({
+            day2: date2
+          });
+    }
+
+    onDate3ChangeHandler = (event) => {
+        const dateTime3 = event.toLocaleString()
+        const date3 = dateTime3.split(',').slice(0, 1).join(' ');
+        this.setState({
+            day3: date3
+          });
+    }
+
     onSubmitHandler = () => {
-        //If date is today's date and 8am, state = none
+        //Combine date and time
+        this.setState({
+            date1: this.state.day1 + ", " + this.state.time1,
+            date2: this.state.day2 + ", " + this.state.time2,
+            date3: this.state.day3 + ", " + this.state.time3
+          });
+        //If no choice for date 1
+        if (this.state.day1.charAt(0) === "D") {
+            this.setState({
+                date1: "None"
+              });
+        }
+        //If no choice for date 2
+        if (this.state.day2.charAt(0) === "D") {
+            this.setState({
+                date2: "None"
+              });
+        }
+        //If no choice for date 3
+        if (this.state.day3.charAt(0) === "D") {
+            this.setState({
+                date3: "None"
+              });
+        }
     }
 
     confirmAppointmentHandler = () => {
         // Add to firebase through axios
+        var fullDate = Date();
+        var date = fullDate.split(' ').slice(0, 5).join(' ');
+        const appointmentInfo = {
+            time: date,
+            name: this.state.name,
+            phone: this.state.phone,
+            email: this.state.email,
+            date1: this.state.date1,
+            date2: this.state.date2,
+            date3: this.state.date3,
+            appointmentFor: this.state.appointmentFor,
+            notes: this.state.notes
+
+        }
+        axios.post('/appointments.json', appointmentInfo);
+        // Redirect to thank you
         this.props.history.push("/thankyou");
     }
 
@@ -43,7 +113,7 @@ class OpenForm extends Component {
         return (
             <div className="OpenForm"> 
                 {/* MODAL */}
-                <div className="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div className="modal-dialog">
                         <div className="modal-content">
                             <div className="modal-header">
@@ -83,7 +153,7 @@ class OpenForm extends Component {
                     {formHeader}
                     <form>
                         <div className="form-group">
-                            <label for="formGroupExampleInput">Name:</label>
+                            <label htmlFor="formGroupExampleInput">Name:</label>
                             <input 
                                 onChange={(event) => this.onChangeHandler(event)}
                                 name="name"
@@ -95,7 +165,7 @@ class OpenForm extends Component {
                              </input>
                         </div>
                         <div className="form-group">
-                            <label for="formGroupExampleInput">Phone:</label>
+                            <label htmlFor="formGroupExampleInput">Phone:</label>
                             <input 
                                 onChange={(event) => this.onChangeHandler(event)} 
                                 name="phone"
@@ -107,7 +177,7 @@ class OpenForm extends Component {
                             </input>
                         </div>
                         <div className="form-group">
-                            <label for="exampleFormControlInput1">Email:</label>
+                            <label htmlFor="exampleFormControlInput1">Email:</label>
                             <input 
                                 onChange={(event) => this.onChangeHandler(event)} 
                                 name="email"
@@ -119,25 +189,81 @@ class OpenForm extends Component {
                             </input>
                         </div>
                         <div className="form-group">
-                            <label for="formGroupExampleInput">Date:</label>
+                            <label htmlFor="formGroupExampleInput">Date:</label>
                                 <div className="row">
                                     <div className="col-lg-4 col-xs-12">
                                         <p id="choices">1st Choice (Required):</p>
-                                        <Calander onChange={(event) => this.onChangeHandler(event)} name="date1" value={this.state.date1} />
+                                        <DatePicker
+                                            value={this.state.day1}
+                                            onChange={date => this.onDate1ChangeHandler(date)}
+                                            minDate={new Date()}
+                                            className="form-control"
+                                            id= "date1"
+                                        />
+                                        <select onChange={(event) => this.onChangeHandler(event)} name="time1" value={this.state.time1} className="form-control" id="exampleFormControlSelect1">
+                                            <option value="" disabled selected>Time</option>
+                                            <option>8:00am</option>
+                                            <option>9:00am</option>
+                                            <option>10:00am</option>
+                                            <option>11:00am</option>
+                                            <option>12:00pm</option>
+                                            <option>1:00pm</option>
+                                            <option>2:00pm</option>
+                                            <option>3:00pm</option>
+                                            <option>4:00pm</option>
+                                            <option>5:00pm</option>
+                                        </select>    
                                     </div>
                                     <div className="col-lg-4 col-xs-12">
                                         <p id="choices">2nd Choice:</p>
-                                        <Calander />
+                                        <DatePicker
+                                            value={this.state.day2}
+                                            onChange={date => this.onDate2ChangeHandler(date)}
+                                            minDate={new Date()}
+                                            className="form-control"
+                                        />
+                                        <select onChange={(event) => this.onChangeHandler(event)} name="time2" value={this.state.time2} className="form-control" id="exampleFormControlSelect4">
+                                            <option value="" disabled selected>Time</option>
+                                            <option>8:00am</option>
+                                            <option>9:00am</option>
+                                            <option>10:00am</option>
+                                            <option>11:00am</option>
+                                            <option>12:00pm</option>
+                                            <option>1:00pm</option>
+                                            <option>2:00pm</option>
+                                            <option>3:00pm</option>
+                                            <option>4:00pm</option>
+                                            <option>5:00pm</option>
+                                        </select> 
                                     </div>
                                     <div className="col-lg-4 col-xs-12">
                                         <p id="choices">3rd Choice:</p>
-                                        <Calander />
+                                        <DatePicker
+                                            value={this.state.day3}
+                                            onChange={date => this.onDate3ChangeHandler(date)}
+                                            minDate={new Date()}
+                                            className="form-control"
+                                        />
+                                        <select onChange={(event) => this.onChangeHandler(event)} name="time3" value={this.state.time3} className="form-control" id="exampleFormControlSelect5">
+                                            <option value="" disabled selected>Time</option>
+                                            <option>8:00am</option>
+                                            <option>9:00am</option>
+                                            <option>10:00am</option>
+                                            <option>11:00am</option>
+                                            <option>12:00pm</option>
+                                            <option>1:00pm</option>
+                                            <option>2:00pm</option>
+                                            <option>3:00pm</option>
+                                            <option>4:00pm</option>
+                                            <option>5:00pm</option>
+                                        </select> 
                                     </div>
                                 </div>
                         </div>
                         <div className="form-group">
-                            <label for="exampleFormControlSelect1">I'm Making an Appointment For:</label>
-                            <select onChange={(event) => this.onChangeHandler(event)} name="appointmentFor" value={this.state.appointmentFor} class="form-control" id="exampleFormControlSelect1">
+                            <label htmlFor="exampleFormControlSelect1">I'm Making an Appointment For:</label>
+                            <select onChange={(event) => this.onChangeHandler(event)} name="appointmentFor" value={this.state.appointmentFor} className="form-control" id="exampleFormControlSelect6">
+                                <option value="" disabled selected>Select your option</option>
                                 <option>Full Set: Natural Volume</option>
                                 <option>Full Set: Volume</option>
                                 <option>Full Set: Mega Volume</option>
@@ -148,7 +274,7 @@ class OpenForm extends Component {
                             </select>
                         </div>
                         <div className="form-group">
-                            <label for="exampleFormControlTextarea1">Notes, Comments, and Questions:</label>
+                            <label htmlFor="exampleFormControlTextarea1">Notes, Comments, and Questions:</label>
                             <textarea 
                                 onChange={(event) => this.onChangeHandler(event)} 
                                 name="notes"
