@@ -67,7 +67,7 @@ class Footer extends Component {
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="button" className="btn btn-primary" id="confirmButton" data-dismiss="modal" onClick={this.logInHandler}>Log In</button>
+                                <button type="submit" className="btn btn-primary" id="confirmButton" data-dismiss="modal" onClick={this.logInHandler}>Log In</button>
                             </div>
                         </div>
                     </div>
@@ -76,7 +76,6 @@ class Footer extends Component {
 
                 {/* FOOTER */}
                 <h1 id="brand">LASHED.BY.THUONG</h1>
-                <h6>Contact Information:</h6>
                 <center>
                 <div className="row" id="icons">
                     <div className="col-4">

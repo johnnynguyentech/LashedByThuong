@@ -1,18 +1,38 @@
 import React, { Component } from 'react';
 import TitleLabel from '../../components/TitleLabel/TitleLabel';
 import axios from '../../axios-appt';
+import Aux from '../../hoc/Aux/Aux';
 
 import './TeamMember.css';
 
 
 class TeamMember extends Component {
     state = {
-        appts: []
+        appts: [],
+        open: true
+    }
+
+    onChangeHandler = () => {
+        if(this.state.open){
+            this.setState({open: false});
+        }
+        else{
+            this.setState({open: true});
+        }
+        //update firebase open data
+        let open = null;
+        if (this.state.open){
+            open = 'false';
+        }
+        else{
+            open = 'true'
+        }
+        axios.put('/open.json', open);
     }
     
     componentDidMount() {
+        // Add appointments to table
         axios.get('/appointments.json').then(response => {
-            console.log(response);
             const results = [];
             for (let key in response.data) {
                 results.unshift({
@@ -20,62 +40,54 @@ class TeamMember extends Component {
                     id: key
                 })
             }
-            this.setState({appts: results},
-                function(){
-                    console.log(this.state.appts);
-                }
-            )
+            this.setState({appts: results})
+        })
+        //Grab open/close from firebase
+        // Set open to what it is on firebase
+        axios.get('/open.json').then(response => {
+            const openOrNot = response.data;
+            this.setState({open: openOrNot})
+            
         })
     }
 
     render () {
-        // let tableItem = null;
-        // for ( let i=0; i < this.state.appts.length; i++ ) {
-        //     tableItem += <tr>
-        //                     <td> {this.state.appts[i].time} </td> 
-        //                     <td> {this.state.appts[i].name} </td> 
-        //                     <td> {this.state.appts[i].phone} </td> 
-        //                     <td> {this.state.appts[i].email} </td> 
-        //                     <td> {this.state.appts[i].date1} </td> 
-        //                     <td> {this.state.appts[i].date2} </td> 
-        //                     <td> {this.state.appts[i].date3} </td> 
-        //                     <td> {this.state.appts[i].appointmentFor} </td> 
-        //                     <td> {this.state.appts[i].notes} </td>
-        //                  </tr>;
-        // }
-        // const tableRows = <> + {tableItem} + </>;
-        // const tableItem = <>
-        //                         <tr>
-        //                             <td> test1 </td> 
-        //                             <td> test</td> 
-        //                             <td> test </td> 
-        //                             <td> test </td> 
-        //                             <td> test </td> 
-        //                             <td> test </td> 
-        //                             <td> test </td> 
-        //                             <td> test </td> 
-        //                             <td> test12</td>
-        //                         </tr>  
-        //                         <tr>
-        //                             <td> test1 </td> 
-        //                             <td> test</td> 
-        //                             <td> test </td> 
-        //                             <td> test </td> 
-        //                             <td> test </td> 
-        //                             <td> test </td> 
-        //                             <td> test </td> 
-        //                             <td> test </td> 
-        //                             <td> test12</td>
-        //                         </tr>
-        //                  </>
-        //                 ;
-        
+        let tableInfo = (
+                <Aux>
+                    {this.state.appts.map((appts, index) => {
+                        return (
+                            <tr key={appts + index}>
+                                <td>{appts.time}</td>
+                                <td>{appts.name}</td>
+                                <td>{appts.phone}</td>
+                                <td>{appts.email}</td>
+                                <td>{appts.date1}</td>
+                                <td>{appts.date2}</td>
+                                <td>{appts.date3}</td>
+                                <td>{appts.appointmentFor}</td>
+                                <td>{appts.notes}</td>
+                                <td>{appts.formSigned}</td>
+                            </tr>
+                        );
+                    })}
+                </Aux>
+            );
+        let formOpen = <h6>Booking form is OPEN</h6>;
+        if (!this.state.open) {
+            formOpen = <h6>Booking form is CLOSED</h6>;
+        }
         return (
             <div className="TeamMember"> 
                 <TitleLabel>TEAM MEMBER</TitleLabel>
-                <h3 id="greeting">Welcome Team Member!</h3>   
+                <h3 id="greeting">Welcome Team Member!</h3>
                 <center>
-                    <div className="container">
+                    <h5>TURN ON/OFF BOOKING FORM</h5>
+                    <label className="switch">
+                        <input type="checkbox" checked={this.state.open} onChange={() => this.onChangeHandler()}></input>
+                        <span className="slider round"></span>
+                    </label>
+                    {formOpen}
+                    <div className="apptTable">
                         <table className="table" id="order_table">
                             <thead className="thead-dark">
                                 <tr>
@@ -88,10 +100,11 @@ class TeamMember extends Component {
                                     <th scope="col">Date 3</th>
                                     <th scope="col">Appointment For</th>
                                     <th scope="col">Notes</th>
+                                    <th scope="col">Form Signed</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {/* {tableRows} */}
+                                {tableInfo}
                             </tbody>
                         </table>
                     </div>

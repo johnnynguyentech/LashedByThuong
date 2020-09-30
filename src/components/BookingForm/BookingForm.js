@@ -7,10 +7,12 @@ import axios from '../../axios-appt';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
+import SignatureCanvas from 'react-signature-canvas';
+
 
 class OpenForm extends Component {
     state = {
-        openAppointments: false,
+        openAppointments: true,
         name: "",
         phone: "",
         email: "",
@@ -19,6 +21,9 @@ class OpenForm extends Component {
         date3: "",
         appointmentFor: "",
         notes: "",
+        formSigned: false,
+        firstname: "",
+        lastname: "",
         day1: "Date",
         day2: "Date",
         day3: "Date",
@@ -58,8 +63,9 @@ class OpenForm extends Component {
     }
 
     onSubmitHandler = () => {
-        //Combine date and time
+        //Combine date and time and name
         this.setState({
+            name: this.state.firstname + " " + this.state.lastname,
             date1: this.state.day1 + ", " + this.state.time1,
             date2: this.state.day2 + ", " + this.state.time2,
             date3: this.state.day3 + ", " + this.state.time3
@@ -82,12 +88,33 @@ class OpenForm extends Component {
                 date3: "None"
               });
         }
+        // Make sure form is filled out
+        if ((this.state.firstname == "") || 
+            (this.state.phone == "") ||
+            (this.state.day1 == "Date") ||
+            (this.state.time1 == "") ||
+            (this.state.appointmentFor == "")) {
+                alert("Please make sure all required inputs are filled out!");
+        }
+    }
+    onCheckChangeHandler = () => {
+        console.log("test");
+        if(this.state.formSigned){
+            this.setState({formSigned: false});
+        }
+        else{
+            this.setState({formSigned: true});
+        }
     }
 
     confirmAppointmentHandler = () => {
         // Add to firebase through axios
         var fullDate = Date();
         var date = fullDate.split(' ').slice(0, 5).join(' ');
+        let signature = "No";
+        if (this.state.formSigned) {
+            signature = "Yes";
+        }
         const appointmentInfo = {
             time: date,
             name: this.state.name,
@@ -97,32 +124,81 @@ class OpenForm extends Component {
             date2: this.state.date2,
             date3: this.state.date3,
             appointmentFor: this.state.appointmentFor,
-            notes: this.state.notes
-
+            notes: this.state.notes,
+            formSigned: signature
         }
         axios.post('/appointments.json', appointmentInfo);
         // Redirect to thank you
         this.props.history.push("/thankyou");
     }
 
+    componentDidMount () {
+        // Grab open data from firebase
+        // If true set open appointments to true, visa versa
+        axios.get('/open.json').then(response => {
+            const openOrNot = response.data;
+            this.setState({openAppointments: openOrNot})
+        })
+    }
+
+
+
     render () {
+        const todayTemp = new Date().toLocaleString()
+        const today = todayTemp.split(",").slice(0, 1).join(' ');
         let formHeader = <center><h3>ONLINE APPOINTMENTS ARE CURRENTLY CLOSED</h3></center>;
         if (this.state.openAppointments) {
             formHeader = <center><h3>CONTACT INFORMATION AND APPOINTMENT DETAILS</h3></center>;
         }
         return (
-            <div className="OpenForm"> 
-                {/* MODAL */}
+            <div className="OpenForm">
+                {/* SIGN FORM MODAL */}
                 <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div className="modal-dialog">
                         <div className="modal-content">
                             <div className="modal-header">
-                                <h5 className="modal-title" id="exampleModalLabel">Appointment Summary</h5>
+                                <h5 className="modal-title" id="exampleModalLabel">Intake Form</h5>
                                 <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
                             <div className="modal-body">
+                                <div className="signForm">
+                                    <p>By signing and checking below I confirm to the following statements:</p>
+                                    <ul>
+                                        <li>Thuong is not liable.</li>
+                                        <li>I do not have covid 19</li>
+                                        <li>I do not</li>
+                                        <li>Blah blah blah</li>
+                                    </ul>
+                                    <div id="signer">
+                                        <SignatureCanvas onClick={this.signHandler} canvasProps={{width: 450, height: 200, className: 'sigCanvas'}} />
+                                        <hr id="sigLine"></hr>
+                                    </div>
+                                    <input type="checkbox" id="signCheck" name="signCheck" checked={this.state.formSigned} onChange={() => this.onCheckChangeHandler()}></input>
+                                    <label for="signCheck" className="signerCheck">I, {this.state.name}, confirm to the following statements on {today}.</label>
+                                </div>
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" className="btn btn-primary" id="confirmButton" data-dismiss="modal" data-toggle="modal" data-target="#exampleModalLong" disabled={!this.state.formSigned}>Continue</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* SUMMARY MODAL */}
+                <div className="modal fade" id="exampleModalLong" tabIndex="-1" aria-labelledby="exampleModalLabelLongTitle" aria-hidden="true">
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title" id="exampleModalLabelLongTitle">Appointment Summary</h5>
+                                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div className="modal-body">
+                                <center><p>Does your information look correct?</p></center>
                                 <p id="clientInfo">Name: </p>
                                 <p>{this.state.name}</p>
                                 <p id="clientInfo">Phone: </p>
@@ -141,7 +217,7 @@ class OpenForm extends Component {
                                 <p>{this.state.notes}</p>
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" className="btn btn-secondary" data-dismiss="modal" data-toggle="modal" data-target="#exampleModal">Go Back</button>
                                 <button type="button" className="btn btn-primary" id="confirmButton" data-dismiss="modal" onClick={this.confirmAppointmentHandler}>Confirm Appointment</button>
                             </div>
                         </div>
@@ -153,15 +229,27 @@ class OpenForm extends Component {
                     {formHeader}
                     <form>
                         <div className="form-group">
-                            <label htmlFor="formGroupExampleInput">Name:</label>
+                            <label htmlFor="formGroupExampleInput">First Name:</label>
                             <input 
                                 onChange={(event) => this.onChangeHandler(event)}
-                                name="name"
-                                value={this.state.name} 
+                                name="firstname"
+                                value={this.state.firstname} 
                                 type="text" 
                                 className="form-control" 
-                                id="formGroupExampleInput" 
-                                placeholder="Thuong An">
+                                id="formGroupExampleInput7" 
+                                placeholder="Thuong">
+                             </input>
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="formGroupExampleInput">Last Name:</label>
+                            <input 
+                                onChange={(event) => this.onChangeHandler(event)}
+                                name="lastname"
+                                value={this.state.lastname} 
+                                type="text" 
+                                className="form-control" 
+                                id="formGroupExampleInput8" 
+                                placeholder="An">
                              </input>
                         </div>
                         <div className="form-group">
@@ -172,7 +260,7 @@ class OpenForm extends Component {
                                 value={this.state.phone} 
                                 type="tel" 
                                 className="form-control" 
-                                id="formGroupExampleInput1" 
+                                id="formGroupExampleInput9" 
                                 placeholder="408-555-5555">
                             </input>
                         </div>
@@ -201,17 +289,10 @@ class OpenForm extends Component {
                                             id= "date1"
                                         />
                                         <select onChange={(event) => this.onChangeHandler(event)} name="time1" value={this.state.time1} className="form-control" id="exampleFormControlSelect1">
-                                            <option value="" disabled selected>Time</option>
-                                            <option>8:00am</option>
-                                            <option>9:00am</option>
-                                            <option>10:00am</option>
-                                            <option>11:00am</option>
-                                            <option>12:00pm</option>
-                                            <option>1:00pm</option>
-                                            <option>2:00pm</option>
-                                            <option>3:00pm</option>
-                                            <option>4:00pm</option>
-                                            <option>5:00pm</option>
+                                            <option value="" disabled defaultValue>Time</option>
+                                            <option>8:00am-11:00am</option>
+                                            <option>11:00am-2:00pm</option>
+                                            <option>2:00pm-5:00pm</option>
                                         </select>    
                                     </div>
                                     <div className="col-lg-4 col-xs-12">
@@ -223,17 +304,10 @@ class OpenForm extends Component {
                                             className="form-control"
                                         />
                                         <select onChange={(event) => this.onChangeHandler(event)} name="time2" value={this.state.time2} className="form-control" id="exampleFormControlSelect4">
-                                            <option value="" disabled selected>Time</option>
-                                            <option>8:00am</option>
-                                            <option>9:00am</option>
-                                            <option>10:00am</option>
-                                            <option>11:00am</option>
-                                            <option>12:00pm</option>
-                                            <option>1:00pm</option>
-                                            <option>2:00pm</option>
-                                            <option>3:00pm</option>
-                                            <option>4:00pm</option>
-                                            <option>5:00pm</option>
+                                            <option value="" disabled defaultValue>Time</option>
+                                            <option>8:00am-11:00am</option>
+                                            <option>11:00am-2:00pm</option>
+                                            <option>2:00pm-5:00pm</option>
                                         </select> 
                                     </div>
                                     <div className="col-lg-4 col-xs-12">
@@ -245,17 +319,10 @@ class OpenForm extends Component {
                                             className="form-control"
                                         />
                                         <select onChange={(event) => this.onChangeHandler(event)} name="time3" value={this.state.time3} className="form-control" id="exampleFormControlSelect5">
-                                            <option value="" disabled selected>Time</option>
-                                            <option>8:00am</option>
-                                            <option>9:00am</option>
-                                            <option>10:00am</option>
-                                            <option>11:00am</option>
-                                            <option>12:00pm</option>
-                                            <option>1:00pm</option>
-                                            <option>2:00pm</option>
-                                            <option>3:00pm</option>
-                                            <option>4:00pm</option>
-                                            <option>5:00pm</option>
+                                            <option value="" disabled defaultValue>Time</option>
+                                            <option>8:00am-11:00am</option>
+                                            <option>11:00am-2:00pm</option>
+                                            <option>2:00pm-5:00pm</option>
                                         </select> 
                                     </div>
                                 </div>
@@ -263,7 +330,7 @@ class OpenForm extends Component {
                         <div className="form-group">
                             <label htmlFor="exampleFormControlSelect1">I'm Making an Appointment For:</label>
                             <select onChange={(event) => this.onChangeHandler(event)} name="appointmentFor" value={this.state.appointmentFor} className="form-control" id="exampleFormControlSelect6">
-                                <option value="" disabled selected>Select your option</option>
+                                <option value="" disabled defaultValue>Select your option</option>
                                 <option>Full Set: Natural Volume</option>
                                 <option>Full Set: Volume</option>
                                 <option>Full Set: Mega Volume</option>

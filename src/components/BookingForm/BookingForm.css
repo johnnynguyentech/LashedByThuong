@@ -40,6 +40,32 @@
     line-height: 0.2;
 }
 
+.signForm{
+    font-family: 'Times New Roman', Times, serif;
+}
+
+#signer{
+    border: 2px solid grey;
+    border-radius: 10px;
+}
+
+#sigLine{
+    width: 85%;
+}
+
+#exampleModal{
+    overflow-y:scroll;
+}
+
+#exampleModalLong{
+    overflow-y:scroll;
+}
+
+.signerCheck{
+    padding-top: 10px;
+    padding-left: 5px;
+}
+
 @media only screen
   and (max-device-width: 600px) {
     #openFormJumbo{
