@@ -89,11 +89,11 @@ class OpenForm extends Component {
               });
         }
         // Make sure form is filled out
-        if ((this.state.firstname == "") || 
-            (this.state.phone == "") ||
-            (this.state.day1 == "Date") ||
-            (this.state.time1 == "") ||
-            (this.state.appointmentFor == "")) {
+        if ((this.state.firstname === "") || 
+            (this.state.phone === "") ||
+            (this.state.day1 === "Date") ||
+            (this.state.time1 === "") ||
+            (this.state.appointmentFor === "")) {
                 alert("Please make sure all required inputs are filled out!");
         }
     }
