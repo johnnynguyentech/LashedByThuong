@@ -1,23 +1,18 @@
 .Footer {
     text-align: center;
-    background-color: black;
-    color: white;
-    font-family: 'Lexend Peta', sans-serif;
-}
-
-#brand {
-    padding-top: 30px;
-    font-family: 'Kalam', cursive;
+    background-color: #F7F7F7;
+    color: grey;
+    font-family: "Helvetica", Sans-serif;
 }
 
 #icons{
     width: 90%;
-    padding-top: 15px;
+    padding-top: 40px;
     padding-bottom: 10px;;
 }
 
 #link{
-    color:white;
+    color:grey;
 }
 
 #copyright{
@@ -27,6 +22,8 @@
 
 #teamButton{
     margin-bottom: 10px;
+    color: grey;
+    font-size: 16px;
 }
 
 .modal-title{
@@ -35,6 +32,18 @@
 
 .modal-body{
     color: black;
+}
+
+#ig{
+    color: grey;
+}
+
+#info{
+    text-align: left;
+}
+
+#footerTitle{
+    font-weight: bold;
 }
 
 @media only screen

@@ -75,23 +75,25 @@ class Footer extends Component {
 
 
                 {/* FOOTER */}
-                <h1 id="brand">LASHED.BY.THUONG</h1>
                 <center>
                 <div className="row" id="icons">
-                    <div className="col-4">
-                        <i className="fas fa-phone-square fa-5x"></i>
-                        <p id="contactinfo">1(408)568-7616</p>
+                    <div className="col-lg-4 col-xs-12">
+                        <h4 id="footerTitle">Contact Info</h4>
+                        <p>1(408)568-7616</p>
+                        <p><a id="link" href="mailto:lashedbythuong@gmail.com">lashedbythuong@gmail.com</a></p>
                     </div>
-                    <div className="col-4">
-                        <i className="fas fa-envelope-square fa-5x"></i>
-                        <p id="contactinfo"><a id="link" href="mailto:lashedbythuong@gmail.com">Email</a></p>
+                    <div className="col-lg-4 col-xs-12">
+                        <h4 id="footerTitle">Team Member Login</h4>
+                        <button type="button" className="btn btn-light btn-sm" id="teamButton" data-toggle="modal" data-target="#exampleModal2">Click here to login</button>
                     </div>
-                    <div className="col-4">
-                        <i className="fab fa-instagram-square fa-5x"></i>
+                    <div className="col-lg-4 col-xs-12">
+                        <h4 id="footerTitle">View More</h4>
+                        <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">
+                            <i className="fab fa-instagram  fa-5x" id="ig"></i>
+                        </a>
                         <p id="contactinfo"><a id="link" href="https://www.instagram.com/lashedbythuong/?hl=en" target="_blank" rel="noopener noreferrer">@lashedbythuong</a></p>
                     </div>
                 </div>
-                <button type="button" className="btn btn-light btn-sm" id="teamButton" data-toggle="modal" data-target="#exampleModal2" >Team Member Login</button>
                 <p id="copyright">© Copyright 2020 LashedByThuong | All Rights Reserved.</p>
                 </center>
             </div>
